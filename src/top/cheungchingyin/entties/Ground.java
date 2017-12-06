@@ -3,21 +3,28 @@ package top.cheungchingyin.entties;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import top.cheungchingyin.test.Game;
+import top.cheungchingyin.view.GamePanel;
+
 public class Ground {
 	private int[][] obstacles=new int[Global.WIDTH][Global.HEIGHT];//储存表示障碍的障碍物
-
+	ScoreTotal st=new ScoreTotal();//全局变量
+	
 	public void accept(Shape shape){							//接收图形，把图形变为障碍物
 		System.out.println("Ground's appept");
 		for(int x = 0;x < 4;x++){
 			for(int y = 0;y < 4;y++){
 				if(shape.isMember(x, y, false)){
-					obstacles[shape.getLeft()+x][shape.getTop()+y]=1;
+					obstacles[shape.getLeft()+x][shape.getTop()+y]=1;//如果方格被占用则该数组为1
 				}
 			}
 		}
 		for(int y=Global.HEIGHT-1;y>=0;y--){
 			
-			deltetFullLine();
+			deltetFullLine();//删除满行
 		}
 	}
 	
@@ -50,7 +57,7 @@ public class Ground {
 		for(int x =0;x < 4;x++){//左移，右移，下移判断是否出边界
 			for(int y = 0 ;y < 4;y++){
 				if(shape.isMember(x, y,action == Shape.ROTATE)){
-					if(top + y>=Global.HEIGHT || left + x<0 || left +x>=Global.WIDTH || obstacles[left+x][top+y]==1){//由于一个图形的大小占用是4x4，需要保证4x4的右上的点位不超出边界，这里的条件是草畜边界的，返回false
+					if(top + y>=Global.HEIGHT  || left + x<0 || left +x>=Global.WIDTH|| obstacles[left+x][top+y]==1){//由于一个图形的大小占用是4x4，需要保证4x4的右上的点位不超出边界，这里的条件是草畜边界的，返回false
 						return false;
 					}
 				}
@@ -62,16 +69,20 @@ public class Ground {
 	private void deltetFullLine(){
 		
 		for(int y = Global.HEIGHT-1;y>0;y--){//一行一行地判断是否满足一行
-			boolean full=true;
+			int fullLine=0;
 			for(int x=0;x<Global.WIDTH;x++){//判断这一行是否有空白
-				if(obstacles[x][y] == 0){
-					full=false;
+				if(obstacles[x][y] == 1){
+					fullLine+=1;
 				}
 			}
-			if(full){
+			if(fullLine==Global.WIDTH){
 				deleteLine(y);//消除这一行
+//				ScoreTotal st =new ScoreTotal();//在这里new的话不会累加
+				st.addScore();
+				Game.setJl2(""+st.getScore());
 			}
 		}
+		
 		
 	}
 	
@@ -79,7 +90,9 @@ public class Ground {
 		for(int y=lineNum ; y>0 ; y--){//从满行的地方开始，往上一行一行检测
 			for(int x=0;x<Global.WIDTH;x++){
 				obstacles[x][y]=obstacles[x][y-1];
+				
 			}
+			
 		}
 		for(int x=0;x<Global.WIDTH;x++){//第一行全部变成空白
 			obstacles[x][0]=0;

@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
 		//redrawing
 		g.setColor(new Color(0xcfcfcf));//设置画笔颜色为灰色
 //		g.setColor(Color.GRAY);//设置背景颜色
-		g.fillRect(0, 0, Global.WIDTH*Global.CELL_SIZE, Global.HEIGHT*Global.CELL_SIZE);//解决拖影问题，填充了灰色与背景颜色相同所以解决了拖影问题
+		g.fillRect(1, 0, Global.WIDTH*Global.CELL_SIZE, Global.HEIGHT*Global.CELL_SIZE);//解决拖影问题，填充了灰色与背景颜色相同所以解决了拖影问题
 		if(shape!=null && ground!=null){
 			shape.drawMe(g);
 			ground.drawMe(g);

@@ -3,7 +3,10 @@ package top.cheungchingyin.entties;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.JOptionPane;
+
 import top.cheungchingyin.listener.ShapeListener;
+import top.cheungchingyin.test.Game;
 
 public class Shape {
 	
@@ -110,7 +113,8 @@ public class Shape {
 				moveDown();
 				listener.shapeMoveDown(Shape.this);
 				try{
-					Thread.sleep(1000);
+					Thread.sleep(400);
+					
 				}catch(InterruptedException e){
 					e.printStackTrace();
 				}
@@ -120,7 +124,7 @@ public class Shape {
 	
 	public Shape(){
 		
-		left=2;//图形出生的位置
+		left=0;//图形出生的位置
 		top=0;
 		new Thread(new ShapeDriver()).start();
 	}
